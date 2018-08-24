@@ -241,10 +241,12 @@ class OptionsParser():
 
         gtdb_taxonomy = Taxonomy().read(Config.TAXONOMY_FILE)
 
-        self.logger.info('Identifying genomes from the specified outgroup.')
+        self.logger.info('Identifying genomes from the specified outgroup(s).')
         outgroup = set()
+        outgroup_taxa = set(options.outgroup_taxon.split(','))
+
         for genome_id, taxa in gtdb_taxonomy.iteritems():
-            if options.outgroup_taxon in taxa:
+            if not set(taxa).isdisjoint(outgroup_taxa):
                 outgroup.add(genome_id)
 
         reroot = RerootTree()
